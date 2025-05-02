@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+PROCESSFLAG=$1
+PROCESS=$2
+COMMANDFLAG=$3
+COMMAND=$4
+
+help(){
+	echo "USAGE : wtr -p processName -c \"commandToRun\""
+	exit 1
+}
+
+if [ "$PROCESSFLAG" = "-h" ];then
+	help
+elif [ "$PROCESSFLAG" != "-p" ] || [ "$COMMANDFLAG" != "-c" ];then
+	help
+fi
+
+
+while pgrep "$PROCESS" > /dev/null; do 
+	sleep 1; 
+done
+
+sh -c "$COMMAND"
