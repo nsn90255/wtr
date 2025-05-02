@@ -6,9 +6,13 @@ PROCESSFLAG=$1
 PROCESS=$2
 COMMANDFLAG=$3
 COMMAND=$4
+SLEEPFLAG=$5
+SLEEPAMOUNT=$6
 
 help(){
-	echo "USAGE : wtr -p processName -c \"commandToRun\""
+	echo "USAGE : wtr -p processName -c \"commandToRun\" -s delay"
+	echo
+	echo "The delay amount is a sleep argument (i.e. you can use 20m for 20 minutes of delay between the process ending and the command being run)"
 	exit 1
 }
 
@@ -18,9 +22,14 @@ elif [ "$PROCESSFLAG" != "-p" ] || [ "$COMMANDFLAG" != "-c" ];then
 	help
 fi
 
+if [ "$SLEEPFLAG" != "-s" ];then
+	SLEEPAMOUNT=1
+fi
 
 while pgrep "$PROCESS" > /dev/null; do 
-	sleep 1; 
+	sleep 1
 done
+
+sleep $SLEEPAMOUNT
 
 sh -c "$COMMAND"
